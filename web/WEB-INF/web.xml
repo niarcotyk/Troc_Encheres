@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!--    Servlets-->
+    <servlet>
+        <servlet-name>PageCreerCompte</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageCreerCompte</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageAccueilEnchere</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageAccueilEnchere</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageConnexion</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageConnexion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageDeconnexion</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageDeconnexion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SupprimerCompte</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.SupprimerCompte</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageVendreUnArticle</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageVendreUnArticle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageModifierProfil</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageModifierProfil</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageMonProfil</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageMonProfil</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageEncherir</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageEncherir</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageAcquisition</servlet-name>
+        <servlet-class>fr.eni.trocencheres.servlet.PageAcquisition</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PageCreerCompte</servlet-name>
+        <url-pattern>/PageCreerCompte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageAccueilEnchere</servlet-name>
+        <url-pattern>/PageAccueilEnchere</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageConnexion</servlet-name>
+        <url-pattern>/PageConnexion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageDeconnexion</servlet-name>
+        <url-pattern>/PageDeconnexion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupprimerCompte</servlet-name>
+        <url-pattern>/SupprimerCompte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageVendreUnArticle</servlet-name>
+        <url-pattern>/PageVendreUnArticle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageModifierProfil</servlet-name>
+        <url-pattern>/PageModifierProfil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageMonProfil</servlet-name>
+        <url-pattern>/PageMonProfil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageEncherir</servlet-name>
+        <url-pattern>/PageEncherir</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageAcquisition</servlet-name>
+        <url-pattern>/PageAcquisition</url-pattern>
+    </servlet-mapping>
+    <!-- PARAMETRE GLOBAL-->
+    <context-param>
+        <param-name>MAX_AGE_COOKIE</param-name>
+        <param-value>2147483647</param-value>
+    </context-param>
+    <!--    SESSION-->
+    <session-config>
+        <session-timeout>5</session-timeout>
+    </session-config>
+    <!--WELCOME FILE-->
+    <welcome-file-list>
+        <welcome-file>PageAccueilEnchere</welcome-file>
+    </welcome-file-list>
+
+    <!-- Filtre-->
+    <filter>
+        <filter-name>FiltreConnexion</filter-name>
+        <filter-class>fr.eni.trocencheres.ihm.FiltreConnexion</filter-class>
+    </filter>
+    <filter-mapping >
+        <filter-name>FiltreConnexion</filter-name>
+        <url-pattern>/PageModifierProfil</url-pattern>
+        <url-pattern>/PageMonProfil</url-pattern>
+        <url-pattern>/PageVendreUnArticle</url-pattern>
+        <url-pattern>/SupprimerCompte</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+</web-app>
