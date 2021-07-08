@@ -39,7 +39,7 @@ public class PageEncherir extends HttpServlet {
             //Si utilisateur est connecté
             if (session.getAttribute("utilisateur") != null) {
                 //Récupération de l'article en fonction de l'id
-                List<Article> listeArticles = am.ChoisirArticlesEncherir(id);
+                List<Article> listeArticles = am.ChoisirArticlesEncherir(id, util.getIdUtilisateur());
                 //Affichage des données dans la jsp
                 for (Article art : listeArticles) {
                     req.setAttribute("nom_art", art.getNomArticle());
@@ -64,9 +64,13 @@ public class PageEncherir extends HttpServlet {
                         req.setAttribute("ville", art.getUtilisateur().getVille());
                     }
                     req.setAttribute("vendeur", art.getUtilisateur().getPseudo());
-                    req.setAttribute("Proposition", offre + 1);
+                    //Si offre en cours
+                    if(offre != 0){
+                        req.setAttribute("Proposition", offre + 1);
+                    }else{
+                        req.setAttribute("Proposition",art.getPrixInitial() + 1);
+                    }
                 }
-
                 //Affichage de la page
                 req.getRequestDispatcher("WEB-INF/html/PageEncherir.jsp").forward(req, resp);
             } else {

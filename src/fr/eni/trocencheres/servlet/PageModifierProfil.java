@@ -87,7 +87,6 @@ public class PageModifierProfil extends HttpServlet {
             if (req.getParameter("nmdp") == null) {
                 motPasse = req.getParameter("mdpa");
             }
-            System.out.println(req.getParameter("nmdp"));
             Boolean admin = false;
             //Création de l'objet utilisateur
             Utilisateur utilUpdate = new Utilisateur(idUtilisateur, pseudo, nom, prenom, email, tel, rue, cP, ville, motPasse, admin);

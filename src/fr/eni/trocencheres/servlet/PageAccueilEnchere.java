@@ -6,7 +6,6 @@ import fr.eni.trocencheres.bll.CategorieManager;
 import fr.eni.trocencheres.bo.Article;
 import fr.eni.trocencheres.bo.Categorie;
 import fr.eni.trocencheres.bo.Utilisateur;
-import org.apache.tomcat.jni.Local;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +28,11 @@ public class PageAccueilEnchere extends HttpServlet {
         HttpSession session = req.getSession();
         CategorieManager cm = new CategorieManager();
         listeCategories = cm.AfficherCategories();
-        //Afficher tous les articles
-        List<Article> rechercheParDefaut = aM.affichageArticles();
-        for (Article art : rechercheParDefaut) {
-            System.out.println(art.getDateFinFormat() + art.getDateDebutFormat() + art.getPseudoVendeur());
+        if(session.getAttribute("utilisateur") == null) {
+            //Afficher tous les articles
+            List<Article> rechercheParDefaut = aM.affichageArticles();
+            req.setAttribute("rechercheParDefaut", rechercheParDefaut);
         }
-        req.setAttribute("rechercheParDefaut", rechercheParDefaut);
         //Récupération et réinjection des paramètres de la page jsp pour conservation lors de l'actualisation
         req.setAttribute("listeCategories", listeCategories);
         req.setAttribute("categorie", req.getParameter("combo"));

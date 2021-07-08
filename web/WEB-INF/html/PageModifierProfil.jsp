@@ -22,7 +22,7 @@
 <div class="container shadow p-4">
     <h1 class="row d-flex justify-content-center mb-5 p-2">Mon Profil</h1>
         <div class="p-3">
-            <form action="PageMonProfil" method="post">
+            <form action="PageMonProfil?pseudoVendeur=${pseudo}" method="post">
 
             <div class="row mb-3">
                 <div class="col">
@@ -214,6 +214,7 @@
         </form>
     </div>
 </div>
+<jsp:include page="inclusion/footer.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

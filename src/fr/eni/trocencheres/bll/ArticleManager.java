@@ -161,10 +161,10 @@ public class ArticleManager {
     /**
      * Choisir un Article selon les enchères pour PageEncherir
      */
-    public List<Article> ChoisirArticlesEncherir(int idArticle){
+    public List<Article> ChoisirArticlesEncherir(int idArticle, int idEncherisseur){
         List<Article> listeArticles = null;
         try {
-            listeArticles = articleDAO.selectByEnchere(idArticle);
+            listeArticles = articleDAO.selectByEnchere(idArticle, idEncherisseur);
         } catch (BusinessException e) {
             e.printStackTrace();
         }
