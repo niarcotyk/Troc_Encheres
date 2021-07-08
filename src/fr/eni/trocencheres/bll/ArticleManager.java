@@ -78,7 +78,6 @@ public class ArticleManager {
      */
     public List<Article> rechercheParFiltreEtNoCategorie(int idUtilisateur, String filtre, int idCategorie) throws BusinessException {
         List<Article> listInfoArticle = null;
-
         listInfoArticle =   articleDAO.rechercheParFiltreEtNoCategorie(idUtilisateur,filtre, idCategorie);
         return listInfoArticle;
     }
@@ -92,7 +91,6 @@ public class ArticleManager {
      */
     public List<Article> MesVentesEnCours(int idUtilisateur, String filtre, int idCategorie) throws BusinessException {
         List<Article> listInfoArticle = null;
-
         listInfoArticle =   articleDAO.selectByIdAndDatesEnchere(idUtilisateur,filtre, idCategorie);
         return listInfoArticle;
     }
@@ -107,7 +105,6 @@ public class ArticleManager {
      */
     public List<Article> encheresOuvertes(int idUtilisateur, String filtre, int noCategorie) throws BusinessException {
         List<Article> listInfoArticles = null;
-
         listInfoArticles = articleDAO.selectByDateSupDebEnchereAndInfFinEnchere(idUtilisateur, filtre, noCategorie );
         return listInfoArticles;
     }

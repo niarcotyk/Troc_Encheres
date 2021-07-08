@@ -17,7 +17,7 @@ public class CategorieManager {
     }
 
     /**
-     * Affiche toutes les catégories pour le remplissage de la combobox
+     * Affiche toutes les catégories pour le remplissage de la Combobox
      * @return
      */
     public List<Categorie> AfficherCategories(){
