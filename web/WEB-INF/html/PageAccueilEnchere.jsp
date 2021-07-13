@@ -93,7 +93,7 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${unElement.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${unElement.prixInitial} ${(unElement.prixInitial > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
                                             <label>Fin de l'enchère : ${unElement.dateFinFormat}</label>
@@ -135,10 +135,10 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${maVenteEnCours.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${maVenteEnCours.prix} ${(maVenteEnCours.prix > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère : ${maVenteEnCours.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${maVenteEnCours.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${maVenteEnCours.pseudoVendeur}">
@@ -176,10 +176,10 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${maVenteNonDebutee.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${maVenteNonDebutee.prix} ${(maVenteNonDebutee.prix > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère : ${maVenteNonDebutee.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${maVenteNonDebutee.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${maVenteNonDebutee.pseudoVendeur}">
@@ -218,10 +218,10 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${maVenteTerminee.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${maVenteTerminee.prix} ${(maVenteTerminee.prix > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère : ${maVenteTerminee.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${maVenteTerminee.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${maVenteTerminee.pseudoVendeur}">
@@ -258,10 +258,10 @@
                                         </div>
 
                                         <div class="row">
-                                            <label>Prix : ${enchereOuverte.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${enchereOuverte.prix} ${(enchereOuverte.prix > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère : ${enchereOuverte.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${enchereOuverte.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${enchereOuverte.pseudoVendeur}">
@@ -299,10 +299,10 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${enchereEnCours.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${enchereEnCours.prix} ${(enchereEnCours.prix > 1)? "points" : "point"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère : ${enchereEnCours.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${enchereEnCours.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${enchereEnCours.pseudoVendeur}">
@@ -327,7 +327,6 @@
                     <div class="col-6 p-3 align-items-center">
                         <div class="bg-light shadow-sm p-3">
 
-
                             <div class="w-100 row">
                                 <div class="col-3">
                                 </div>
@@ -340,11 +339,10 @@
                                             </a>
                                         </div>
                                         <div class="row">
-                                            <label>Prix : ${enchereRemportee.prixInitial} ${(unElement.prixInitial > 1)? "point" : "points"}</label>
+                                            <label>Prix : ${enchereRemportee.prix} ${(enchereRemportee.prix > 1)? "point" : "points"}</label>
                                         </div>
                                         <div class="row">
-                                            <label>Fin de l'enchère
-                                                : ${enchereRemportee.dateFinEncheres}</label>
+                                            <label>Fin de l'enchère : ${enchereRemportee.dateFinFormat}</label>
                                         </div>
                                         <div class="row">
                                             <a href="${pageContext.request.contextPath}/PageMonProfil?pseudoVendeur=${enchereRemportee.pseudoVendeur}">

@@ -67,8 +67,8 @@ public class PageMonProfil extends HttpServlet {
         //Récupère la session
         HttpSession session = req.getSession();
         util = (Utilisateur) session.getAttribute("utilisateur");
+        //si ce n'est pas le bouton Supprimer
         if(!req.getParameter("button").equals("supprimer") ){
-
             //Si utilisateur est connecté
             if(session.getAttribute("utilisateur") != null ) {
                 //Récupération des différents champs afin de faire un update
@@ -113,6 +113,7 @@ public class PageMonProfil extends HttpServlet {
             //Renvoie vers doGet afin de charger les nouvelles données
             doGet(req, resp);
         }else{
+            //Suppression du compte
             try {
                 um.supprimer(util.getIdUtilisateur());
                 //efface la session

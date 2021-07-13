@@ -96,6 +96,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 articleEnCours.setIdArticle(rs.getInt("no_article"));
                 articleEnCours.setNomArticle(rs.getString("nom_article"));
                 articleEnCours.setDescription(rs.getString("description"));
+                //Formatage de dates
                 LocalDate dateDebut = rs.getDate("date_debut_encheres").toLocalDate();
                 LocalDate dateFin = rs.getDate("date_fin_encheres").toLocalDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -446,7 +447,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("prix_initial"), Math.max(rs.getInt("prix_vente"),
                         rs.getInt("montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -514,11 +517,13 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
             while (rs.next()) {
                 Article infoArticle = new Article();
 
-                infoArticle.setIdArticle(rs.getInt("arts_no_articles"));
+                infoArticle.setIdArticle(rs.getInt("arts_no_articles")); //arts_prix_initial, arts_prix_vente, encs_montant_enchere,
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -596,7 +601,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -666,7 +673,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -733,7 +742,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -801,7 +812,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -817,7 +830,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
     }
 
     /**
-     * return la liste des infoArticles des ventes en cours en fonction du filtre saisie et de la catégorie selectionnée
+     * retourne la liste des infoArticles des ventes en cours en fonction du filtre saisie et de la catégorie selectionnée
      *
      * @param idUtilisateur
      * @param filtre
@@ -870,7 +883,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
                 infoArticle.setPrix(Math.max(rs.getInt("arts_prix_initial"), Math.max(rs.getInt("arts_prix_vente"),
                         rs.getInt("encs_montant_enchere"))));
                 infoArticle.setNomArticle(rs.getString("arts_nom_article"));
-                infoArticle.setDateFinEncheres(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                //Format de dates
+                String dateFinFormat = formatDate(rs.getDate("arts_date_fin_encheres").toLocalDate());
+                infoArticle.setDateFinFormat(dateFinFormat);
                 infoArticle.setPseudoVendeur(rs.getString("utils_pseudo"));
 
                 listInfoArticle.add(infoArticle);
@@ -892,8 +907,21 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
             }
             i++;
         }
-
         return listInfoArticle;
+    }
+
+    /**
+     * Méthode qui renvoie la date au bon format
+     * @param date
+     * @return
+     */
+    private String formatDate(LocalDate date){
+        String dateFormat = null;
+        LocalDate dateFin = date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dateFormat = dateFin.format(formatter);
+        return dateFormat;
+
     }
 
 }

@@ -89,6 +89,7 @@ public class PageEncherir extends HttpServlet {
         enchere.setIdUtilisateur(util.getIdUtilisateur());
         enchere.setIdArticle(Integer.parseInt((String) session.getAttribute("idArticle")));
         enchere.setMontantEnchere(Integer.parseInt(req.getParameter("maProposition")));
+        enchere.setNoAcquereur(util.getIdUtilisateur()); //Ajout de la personne qui souhaite enchérir
         //Vérification du crédit utilisateur par rapport à la proposition
         if (Integer.parseInt(req.getParameter("maProposition")) < util.getCredit()) {
             try {

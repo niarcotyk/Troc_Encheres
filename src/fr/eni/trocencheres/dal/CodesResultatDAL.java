@@ -75,6 +75,7 @@ public class CodesResultatDAL {
      *
      */
     public static final int UPDATE_DAL_ENCHERE = 10054;
+    public static final int ENCHERES_DEJA_REALISEES = 10055;
     /**
      * Echec de la lecture de la table Articles
      */

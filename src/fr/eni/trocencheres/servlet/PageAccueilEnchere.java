@@ -22,7 +22,6 @@ public class PageAccueilEnchere extends HttpServlet {
     BusinessException businessException = new BusinessException();
     List<Article> rechercheParDefaut = null;
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
@@ -85,7 +84,7 @@ public class PageAccueilEnchere extends HttpServlet {
             if (req.getParameter("combo") != null || req.getParameter("combo") != "0") {
                 noCatSelect = Integer.parseInt(req.getParameter("combo"));
             }
-
+            //Recherche par Filtres
             try {
                 rechercheParDefaut = aM.rechercheParFiltreEtNoCategorie(idUtilisateur, filtreSaisi, noCatSelect);
                 req.setAttribute("rechercheParDefaut", rechercheParDefaut);
@@ -105,7 +104,7 @@ public class PageAccueilEnchere extends HttpServlet {
                 }
 
                 if (req.getParameter("AchatsVentes") != null && req.getParameter("AchatsVentes").equals("a")) {
-
+                    //Recherche Enchères Ouvertes
                     if (req.getParameter("btnEnchereOuverte") != null && req.getParameter("btnEnchereOuverte").equals("on")) {
                         try {
 
@@ -116,7 +115,7 @@ public class PageAccueilEnchere extends HttpServlet {
                             businessException.ajouterErreur(CodesResultatServlet.IMPORT_UTILISATEUR);
                         }
                     }
-
+                    //Recherche Enchères en cours de l'utilisateur
                     if (req.getParameter("btnEnchereEnCour") != null && req.getParameter("btnEnchereEnCour").equals("on")) {
                         try {
                             mesEncheresEnCours = aM.mesEncheresEnCours(idUtilisateur, filtreSaisi, noCatSelect);
@@ -126,6 +125,7 @@ public class PageAccueilEnchere extends HttpServlet {
                             businessException.ajouterErreur(CodesResultatServlet.IMPORT_UTILISATEUR);
                         }
                     }
+                    //Recherche Enchères remportées par l'utilisateur
                     if (req.getParameter("btnEnchereRemporte") != null && req.getParameter("btnEnchereRemporte").equals("on")) {
                         try {
                             mesEncheresRemportees = aM.mesEncheresRemportees(idUtilisateur, filtreSaisi, noCatSelect);
@@ -138,7 +138,7 @@ public class PageAccueilEnchere extends HttpServlet {
                 }
 
                 if (req.getParameter("AchatsVentes") != null && req.getParameter("AchatsVentes").equals("v")) {
-
+                    //Recherche Ventes en cours de l'utilisateur
                     if (req.getParameter("btnVenteEnCour") != null && req.getParameter("btnVenteEnCour").equals("on")) {
                         try {
                             mesVentesEnCours = aM.MesVentesEnCours(idUtilisateur, filtreSaisi, noCatSelect);
@@ -148,7 +148,7 @@ public class PageAccueilEnchere extends HttpServlet {
                             businessException.ajouterErreur(CodesResultatServlet.IMPORT_UTILISATEUR);
                         }
                     }
-
+                    //Recherche Ventes non débutées de l'utilisateur
                     if (req.getParameter("btnVenteNonDebute") != null && req.getParameter("btnVenteNonDebute").equals("on")) {
                         try {
                             mesVentesNonDebutees = aM.MesVentesNonDebutees(idUtilisateur, filtreSaisi, noCatSelect);
@@ -158,7 +158,7 @@ public class PageAccueilEnchere extends HttpServlet {
                             businessException.ajouterErreur(CodesResultatServlet.IMPORT_UTILISATEUR);
                         }
                     }
-
+                    //Recherche Ventes terminées de l'utilisateur
                     if (req.getParameter("btnVenteTerminee") != null && req.getParameter("btnVenteTerminee").equals("on")) {
                         try {
                             mesVentesTerminees = aM.MesVentesTerminees(idUtilisateur, filtreSaisi, noCatSelect);

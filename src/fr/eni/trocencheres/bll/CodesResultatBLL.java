@@ -70,7 +70,6 @@ public class CodesResultatBLL {
     public static final int UPDATE_BLL_ENCHERES = 20053;
 
     public static final int PSEUDO_UTILISATEUR_ECHEC = 20054;
-    public static final int ENCHERES_DEJA_REALISEES = 20055;
     /**
      * Echec de la sélection par Id de catégorie
      */

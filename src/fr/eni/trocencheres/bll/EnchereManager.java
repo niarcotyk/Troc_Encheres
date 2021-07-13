@@ -66,12 +66,7 @@ public class EnchereManager {
             //Création de l'objet Utilisateur
             Utilisateur util = utilisateurDAO.selectById(enchere.getIdUtilisateur());
             if(enchere.getMontantEnchere() < util.getCredit()) {
-                if(!enchere.isDer_ench()) {
-                    enchereDAO.update(enchere);
-                }
-                else{
-                    businessException.ajouterErreur(CodesResultatBLL.ENCHERES_DEJA_REALISEES);
-                }
+                enchereDAO.update(enchere);
             }else{
                 businessException.ajouterErreur(CodesResultatBLL.UPDATE_BLL_ENCHERES);
             }
