@@ -6,13 +6,10 @@ import fr.eni.trocencheres.dal.ConnectionProvider;
 import fr.eni.trocencheres.dal.DAO;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ArticleDAOJdbcImpl implements DAO<Article> {
     private BusinessException businessException = new BusinessException();
@@ -22,13 +19,13 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
     private static final String UPDATE_ARTICLE                              = "UPDATE ARTICLES SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, etat_article = ?, photo = ?, no_utilisateur = ?, no_categorie = ?, vues = ? where no_article=?";
     private static final String DELETE_ARTICLE                              = "DELETE FROM ARTICLES WHERE id=?";
     //encheres ouvertes
-    private static String SELECT_BY_DATE_SUP_DEB_ENCH_AND_INF_FIN_ENCHERE   ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE ?>=arts_date_debut_encheres AND ?<= arts_date_fin_encheres ";
+    private static String SELECT_BY_DATE_SUP_DEB_ENCH_AND_INF_FIN_ENCHERE   ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE GETDATE() BETWEEN arts_date_debut_encheres AND arts_date_fin_encheres ";
     //Mes encheres en Cours
-    private static String SELECT_BY_ID_DATE_DER_ENCHERE                     ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE arts_date_debut_encheres <= ? AND  ? <= arts_date_fin_encheres AND  encs_no_utilisateur=? AND encs_etat_enchere <> 'Annule'  AND encs_derniere_enchere=1 ";
+    private static String SELECT_BY_ID_DATE_DER_ENCHERE                     ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE GETDATE() BETWEEN arts_date_debut_encheres AND arts_date_fin_encheres AND  encs_no_utilisateur=? AND encs_etat_enchere <> 'Annule'  AND encs_derniere_enchere=1 ";
     //Mes encheres Remportees
     private static String SELECT_BY_ID_AND_ETATENCHERE                      ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE encs_no_acquereur=? AND encs_etat_enchere='Vendu'";
     //mes ventes en cours
-    private static String SELECT_BY_ID_AND_DATES_ENCHERE                    ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE arts_no_utilisateur=? AND ?<=arts_date_fin_encheres AND arts_date_debut_encheres<=? ";
+    private static String SELECT_BY_ID_AND_DATES_ENCHERE                    ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE arts_no_utilisateur=? AND GETDATE() BETWEEN arts_date_debut_encheres AND arts_date_fin_encheres ";
     //mes ventes non débutees
     private static String SELECT_BY_ID_DATE_INF_DEB_ENCHERE                 ="SELECT arts_no_articles, arts_nom_article, arts_prix_initial, arts_prix_vente, encs_montant_enchere, cats_libelle, utils_pseudo, arts_date_fin_encheres FROM V_ARTICLES_CATEGORIES_UTILISATEURS_ENCHERES WHERE ?< arts_date_debut_encheres AND arts_no_utilisateur=? ";
     //mes ventes terminees
@@ -49,7 +46,8 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
     private static String SELECT_BY_ENCHERE_REMPORTEE                       ="SELECT nom_article, description, prix_vente, prix_initial, rueUtilisateur, codePostalUtilisateur, villeUtilisateur, rueRetrait, codePostalRetrait, villeRetrait, pseudo, telephone FROM V_UTIL_ENCHERES_ARTICLES_CATEGORIES_LEFT_RETRAITS WHERE no_acquereur = ?";
     //UtilisateurEnchérisseur
     private static String SELECT_BY_ID_ENCHERISSEUR                         ="SELECT credit FROM UTILISATEURS WHERE no_utilisateur = ?";
-
+    //variable utilisée à travers la classe
+    List<Article> listInfoArticle = new ArrayList<>();
     /**
      * Récupère toutes les données de la table article
      *
@@ -404,7 +402,6 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> rechercheParFiltreEtNoCategorie(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -473,7 +470,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdDateDerEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
+        List<Article> listeInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -498,19 +495,17 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
 
             PreparedStatement ptt = cxn.prepareStatement(requestSql);
 
-            ptt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
-            ptt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
-            ptt.setInt(3, idUtilisateur);
+            ptt.setInt(1, idUtilisateur);
 
             if (filtreSaisi && categorieSelect) {
-                ptt.setString(4, filtre);
-                ptt.setInt(5, noCategorie);
+                ptt.setString(2, filtre);
+                ptt.setInt(3, noCategorie);
             }
             if (filtreSaisi && !categorieSelect) {
-                ptt.setString(4, filtre);
+                ptt.setString(2, filtre);
             }
             if (!filtreSaisi && categorieSelect) {
-                ptt.setInt(4, noCategorie);
+                ptt.setInt(2, noCategorie);
             }
 
             ResultSet rs = ptt.executeQuery();
@@ -537,16 +532,9 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
         }
 
         //retrait des doublons
-        int i=0;
-        while((i+1)<listInfoArticle.size()){
-            if (listInfoArticle.get(i).getIdArticle() == listInfoArticle.get(i + 1).getIdArticle()) {
-                listInfoArticle.remove(i + 1);
-                i--;
-            }
-            i++;
-        }
+        listeInfoArticle = retraitDoublons(listInfoArticle);
 
-        return listInfoArticle;
+        return listeInfoArticle;
     }
 
     /**
@@ -558,7 +546,6 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdAndEtatEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -627,7 +614,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByDateSupDebEnchereAndInfFinEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
+        List<Article> listeInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -650,20 +637,18 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
             requestSql = SELECT_BY_DATE_SUP_DEB_ENCH_AND_INF_FIN_ENCHERE + restrictionsComplementaire;
 
             PreparedStatement ptt = cxn.prepareStatement(requestSql);
-            ptt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
-            ptt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
 
             if(filtreSaisi && categorieSelect){
-                ptt.setString(3, filtre);
-                ptt.setInt(4, noCategorie);
+                ptt.setString(1, filtre);
+                ptt.setInt(2, noCategorie);
             }
 
             if (filtreSaisi && !(categorieSelect)) {
-                ptt.setString(3, filtre);
+                ptt.setString(1, filtre);
             }
 
             if (!(filtreSaisi) && categorieSelect) {
-                ptt.setInt(3, noCategorie);
+                ptt.setInt(1, noCategorie);
             }
 
             ResultSet rs = ptt.executeQuery();
@@ -687,7 +672,10 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
             businessException.ajouterErreur(fr.eni.dal.CodesResultatDAL.LECTURE_ARTICLE_ECHEC);
         }
 
-        return listInfoArticle;
+        //retrait des doublons
+        listeInfoArticle = retraitDoublons(listInfoArticle);
+
+        return listeInfoArticle;
     }
 
     /**
@@ -699,7 +687,6 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdAndDateSupFinEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -768,7 +755,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdDateInfDebEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
+        //List<Article> listInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -838,7 +825,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdAndDatesEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        List<Article> listInfoArticle = new ArrayList<>();
+        List<Article> listeInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;
@@ -862,18 +849,16 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
 
             PreparedStatement ptt = cxn.prepareStatement(requestSql);
             ptt.setInt(1, idUtilisateur);
-            ptt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
-            ptt.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
 
             if (filtreSaisi && categorieSelect) {
-                ptt.setString(4, filtre);
-                ptt.setInt(5, noCategorie);
+                ptt.setString(2, filtre);
+                ptt.setInt(3, noCategorie);
             }
             if (filtreSaisi && !categorieSelect) {
-                ptt.setString(4, filtre);
+                ptt.setString(2, filtre);
             }
             if (!filtreSaisi && categorieSelect) {
-                ptt.setInt(4, noCategorie);
+                ptt.setInt(2, noCategorie);
             }
 
             ResultSet rs = ptt.executeQuery();
@@ -899,15 +884,10 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
         }
 
         //retrait des doublons
-        int i=0;
-        while((i+1)<listInfoArticle.size()){
-            if (listInfoArticle.get(i).getIdArticle() == listInfoArticle.get(i + 1).getIdArticle()) {
-                listInfoArticle.remove(i + 1);
-                i--;
-            }
-            i++;
-        }
-        return listInfoArticle;
+        listeInfoArticle = retraitDoublons(listInfoArticle);
+
+        return listeInfoArticle;
+
     }
 
     /**
@@ -924,4 +904,24 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
 
     }
 
+    /**
+     * Permet de retourner un tableau débarasser des doublons
+     * @param listeArticles
+     * @return
+     */
+    private List<Article> retraitDoublons(List<Article> listeArticles){
+        List<Article> listArticles = null;
+        int i=0;
+        while((i+1)<listeArticles.size()){
+            if (listeArticles.get(i).getIdArticle() == listeArticles.get(i + 1).getIdArticle()) {
+                listeArticles.remove(i + 1);
+                i--;
+            }
+            i++;
+        }
+        //recopier le tableau enlevé des doublons
+        listArticles = new ArrayList<Article>(listeArticles);
+
+        return listArticles;
+    }
 }

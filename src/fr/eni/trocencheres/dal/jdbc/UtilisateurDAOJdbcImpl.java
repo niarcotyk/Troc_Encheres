@@ -25,7 +25,7 @@ public class UtilisateurDAOJdbcImpl implements DAO<Utilisateur> {
     private final String SELECTBYPSEUDO         = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = ?";
     private final String SELECTBYPSEUDOANDPWD   = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, " +
                                                   "code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = ? and  mot_de_passe=?";
-    private final String SELECTBYIDCREDIT       = "SELECT montant_enchere, U.no_utilisateur AS Utilisateurenchere FROM V_UTIL_ENCHERES_ARTICLES_CATEGORIES_LEFT_RETRAITS AS V INNER JOIN UTILISATEURS AS U ON U.no_utilisateur = V.utilisateurEnchere WHERE V.no_utilisateur = ?";
+    private final String UPDATELASTENCHERE      = "UPDATE ENCHERES SET der_ench = 1 WHERE no_article = ? AND montant_enchere = ( SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ? AND etat_enchere <> 'annulé')";
     private final String SELECTENCHEREBYIDART   = "SELECT montant_enchere, no_utilisateur FROM ENCHERES WHERE no_article = ? AND der_ench = 1";
     private final String SELECTARTBYIDUTIL      = "SELECT no_article FROM ARTICLES WHERE no_utilisateur = ?";
     private final String SELECTBYIDUTIL         = "SELECT credit FROM UTILISATEURS WHERE no_utilisateur = ?";
@@ -269,6 +269,11 @@ public class UtilisateurDAOJdbcImpl implements DAO<Utilisateur> {
                     pstt3.setInt(2, idArt);
                     pstt3.executeUpdate();
                     //TODO envoyer un mail au propriétaire de l'objet pour l'avertir de la fin de l'enchère pour remise à dispo
+                    //MAJ de la dernière enchère avant celle de l'utilisateur supprimé TEST si 1ière enchère
+                    PreparedStatement pstt4 = cnx.prepareStatement(UPDATELASTENCHERE);
+                    pstt4.setInt(1, idArt);
+                    pstt4.setInt(2, idArt);
+                    pstt4.executeUpdate();
                 }
                 cnx.commit();
             }
