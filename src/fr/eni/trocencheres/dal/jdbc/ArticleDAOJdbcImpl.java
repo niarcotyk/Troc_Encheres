@@ -48,6 +48,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
     private static String SELECT_BY_ID_ENCHERISSEUR                         ="SELECT credit FROM UTILISATEURS WHERE no_utilisateur = ?";
     //variable utilisée à travers la classe
     List<Article> listInfoArticle = new ArrayList<>();
+
     /**
      * Récupère toutes les données de la table article
      *
@@ -755,7 +756,6 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
      * @return
      */
     public List<Article> selectByIdDateInfDebEnchere(int idUtilisateur, String filtre, int noCategorie) {
-        //List<Article> listInfoArticle = new ArrayList<>();
         String requestSql = null;
         String restrictionsComplementaire = "";
         Boolean filtreSaisi = false;

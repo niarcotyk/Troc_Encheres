@@ -5,8 +5,6 @@ import fr.eni.trocencheres.bo.Utilisateur;
 import fr.eni.trocencheres.dal.ConnectionProvider;
 import fr.eni.trocencheres.dal.DAO;
 
-import javax.swing.text.html.HTMLDocument;
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
